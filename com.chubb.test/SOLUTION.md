@@ -1,5 +1,5 @@
 # Solución — Examen Práctico
-se dio solucion agregando en  el controller una anotacion  deletemapping y PathVariable 
+se dio solucion agregando en  el controller una anotacion  deletemapping y PathVariable , en la rama main del repositorio se encuentra las soluciones
 ## Qué se implementó
 se implmento base de datos h2 para mayor agilidad y entregar el ejercicio con tiempo
 
