@@ -6,4 +6,7 @@ import com.chubb.test.model.dtos.ClientDto;
 public interface IClientService {
 	public List<ClientDto> findAll();
 	 public int  save(ClientDto client);
+	 
+public boolean existeCliente(Long id);
+ public void eliminarPorId(Long id) ;
 }

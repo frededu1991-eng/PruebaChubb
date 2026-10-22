@@ -62,5 +62,16 @@ public class ClientService implements IClientService {
 		
 		return row;
 	}
+    
+
+	public boolean existeCliente(Long id) {
+        return clientRepository.existsById(id);
+    }
+
+
+	
+	    public void eliminarPorId(Long id) {
+        clientRepository.deleteById(id);
+    }
 
 }

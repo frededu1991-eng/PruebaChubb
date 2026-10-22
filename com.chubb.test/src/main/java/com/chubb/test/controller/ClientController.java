@@ -6,11 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import com.chubb.test.model.dtos.ClientDto;
 import com.chubb.test.model.dtos.ServiceResponse;
@@ -44,7 +52,7 @@ public class ClientController {
     	
     }
 
-	 @DeleteMapping("/clientes/{id}")
+	@DeleteMapping("/clientes/{id}")
     @Operation(
         summary = "Eliminar un cliente por ID", 
         description = "Elimina permanentemente un cliente del sistema. Retorna 204 si tiene éxito o 404 si el ID no existe."
@@ -54,15 +62,21 @@ public class ClientController {
         @ApiResponse(responseCode = "404", description = "El cliente no existe (Not Found)")
     })
     public ResponseEntity<Void> eliminarCliente(
+		
             @Parameter(description = "ID único del cliente a eliminar", required = true, example = "1")
             @PathVariable Long id) {
         
         // 1. Validar la existencia del cliente utilizando el servicio
-        boolean existe = clienteService.existeCliente(id);
+        boolean existe = clientService.existeCliente(id);
         
         if (!existe) {
             return ResponseEntity.notFound().build(); // Retorna 404 Not Found
-        }
+        }else{
+
+		    clientService.eliminarPorId(id);
+		}
+    
+          return ResponseEntity.noContent().build(); 
 	}
 	
 }
