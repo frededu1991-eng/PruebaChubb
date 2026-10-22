@@ -23,14 +23,14 @@ public class ClientController {
 	@Autowired
 	private IClientService clientService;
 	
-	@CrossOrigin(origins = "http://localhost:4200")
+	@CrossOrigin(origins = "http://localhost:8080")
     @GetMapping("/clients")
     public ResponseEntity<List<ClientDto>> getClients() {
     	return ResponseEntity.ok(clientService.findAll());
     	
     }
 
-	@CrossOrigin(origins = "http://localhost:4200")
+	@CrossOrigin(origins = "http://localhost:8080")
     @PostMapping("/client")
     public ResponseEntity<ServiceResponse> saveClient(@RequestBody ClientDto client) {
     	ServiceResponse serviceReponse = new ServiceResponse();
@@ -43,5 +43,26 @@ public class ClientController {
     	return new ResponseEntity<>(serviceReponse, HttpStatus.OK);
     	
     }
+
+	 @DeleteMapping("/clientes/{id}")
+    @Operation(
+        summary = "Eliminar un cliente por ID", 
+        description = "Elimina permanentemente un cliente del sistema. Retorna 204 si tiene éxito o 404 si el ID no existe."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Cliente eliminado correctamente (No Content)"),
+        @ApiResponse(responseCode = "404", description = "El cliente no existe (Not Found)")
+    })
+    public ResponseEntity<Void> eliminarCliente(
+            @Parameter(description = "ID único del cliente a eliminar", required = true, example = "1")
+            @PathVariable Long id) {
+        
+        // 1. Validar la existencia del cliente utilizando el servicio
+        boolean existe = clienteService.existeCliente(id);
+        
+        if (!existe) {
+            return ResponseEntity.notFound().build(); // Retorna 404 Not Found
+        }
+	}
 	
 }
